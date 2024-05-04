@@ -31,7 +31,7 @@ public class CharacterJump : MonoBehaviour
 
     void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && (_characterChecks.IsOnGround() || (jumpCount < maxJumpCount)))
+        if (Input.GetKeyDown(KeyCode.Space) && (CharacterChecks.Instance.IsOnGround() || (jumpCount < maxJumpCount)))
         {
             // Incrementar el contador de saltos si no está en el suelo
             if (!_characterChecks.IsOnGround())

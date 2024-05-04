@@ -8,12 +8,20 @@ public class CharacterChecks : MonoBehaviour
     [SerializeField]
     public LayerMask groundMask;
     private Rigidbody2D _rigidbody;
+    public bool characterWatchingRight = true;
+
+    #region Singleton
+    public static  CharacterChecks Instance;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
+    #endregion
 
     // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+
 
     // Update is called once per frame
     void Update()
@@ -27,6 +35,20 @@ public class CharacterChecks : MonoBehaviour
         return Physics2D.Raycast(transform.position, Vector2.down, 1.0f, groundMask);
 
     }
+
+    public void SetCharacterWatchingRight(bool watchingRight)
+    {
+        characterWatchingRight = watchingRight;
+    }
+
+    public bool IsWatchingRight()
+    {
+        return characterWatchingRight;
+    }
+
+    
+
+
 
 
 }
