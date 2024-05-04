@@ -6,7 +6,6 @@ public class CharacterMovement : MonoBehaviour
 {
     [SerializeField]
     [Range(1.0f, 10.0f)] public float movementSpeed = 5.0f;
-    private float horizontalInput = 0.0f;
 
     [SerializeField]
     private SpriteRenderer _spriteRenderer;
