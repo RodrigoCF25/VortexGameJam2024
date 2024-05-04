@@ -11,10 +11,12 @@ public class CharacterShooter : MonoBehaviour
     public bool canShoot = true;
     public float reactivateShootingTime = 0.5f;
 
+    private GameObject shootingSpawn;
     private CharacterChecks _characterChecks;
 
     void Start()
     {
+        shootingSpawn = GameObject.Find("ShootingSpawn");
         _characterChecks = CharacterChecks.Instance;
     }
 
@@ -43,7 +45,7 @@ public class CharacterShooter : MonoBehaviour
     {
         if (canShoot && proyectilesRemaining > 0)
         {
-            GameObject projectile = ObjectPooler.Instance.SpawnFromPool("Bullet", transform.position + (_characterChecks.IsWatchingRight() ? new Vector3(1.2f,0.0f,0.0f)  : new Vector3(1.2f,0.0f,0.0f) * -1 ) , projectilePrefab.transform.rotation);
+            GameObject projectile = ObjectPooler.Instance.SpawnFromPool("Bullet", shootingSpawn.transform.position , projectilePrefab.transform.rotation);
             Projectile projectileScript = projectile.GetComponent<Projectile>();
             projectileScript.OnScene(_characterChecks.IsWatchingRight() ? Vector2.right : Vector2.left);
             proyectilesRemaining--;

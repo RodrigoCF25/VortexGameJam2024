@@ -9,6 +9,7 @@ public class CharacterChecks : MonoBehaviour
     public LayerMask groundMask;
     private Rigidbody2D _rigidbody;
     public bool characterWatchingRight = true;
+    private SpriteRenderer _spriteRenderer;
 
     #region Singleton
     public static  CharacterChecks Instance;
@@ -21,7 +22,12 @@ public class CharacterChecks : MonoBehaviour
     #endregion
 
     // Start is called before the first frame update
-
+    void Start()
+    {
+        _rigidbody = GetComponent<Rigidbody2D>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        CharacterMovement.OnCharacterMoveEvent += SetCharacterWatchingDirection;
+    }
 
     // Update is called once per frame
     void Update()
@@ -36,14 +42,25 @@ public class CharacterChecks : MonoBehaviour
 
     }
 
-    public void SetCharacterWatchingRight(bool watchingRight)
-    {
-        characterWatchingRight = watchingRight;
-    }
-
     public bool IsWatchingRight()
     {
         return characterWatchingRight;
+    }
+
+
+    public void SetCharacterWatchingDirection()
+    {
+        if (Input.GetAxis("Horizontal") > 0 && !characterWatchingRight)
+        {
+            characterWatchingRight = true;
+            transform.Rotate(0f, 180f, 0f);
+        }
+        else if (Input.GetAxis("Horizontal") < 0 && characterWatchingRight)
+        {
+            characterWatchingRight = false;
+            transform.Rotate(0f, 180f, 0f);
+            
+        }
     }
 
     

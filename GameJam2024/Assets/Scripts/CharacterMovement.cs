@@ -13,6 +13,11 @@ public class CharacterMovement : MonoBehaviour
 
     // Referencia al objeto que maneja la dirección de mirada del personaje
     private CharacterChecks characterChecks;
+    
+
+    public delegate void OnCharacterMove();
+    public static event OnCharacterMove OnCharacterMoveEvent;
+
 
     void Start()
     {
@@ -28,18 +33,12 @@ public class CharacterMovement : MonoBehaviour
 
     void MoveCharacterHorizontally()
     {
-        horizontalInput = Input.GetAxis("Horizontal");
 
-        // Setea la dirección de mirada del personaje
-        if(horizontalInput != 0)
-        {
-            characterChecks.SetCharacterWatchingRight(horizontalInput > 0);
-        }
-
+        OnCharacterMoveEvent?.Invoke();
         // Mueve al personaje horizontalmente
-        transform.position += Vector3.right * horizontalInput *  Time.deltaTime * movementSpeed;
+        transform.position += Vector3.right * Input.GetAxis("Horizontal") *  Time.deltaTime * movementSpeed;
 
-        // Voltea el Sprite Renderer basado en la dirección de mirada
-        _spriteRenderer.flipX = characterChecks.IsWatchingRight() ? false : true;
+        
+        
     }
 }
