@@ -7,6 +7,11 @@ public class CameraFollowsCharacter : MonoBehaviour
     public GameObject player;
     public Vector2 offset;
 
+    void Start() 
+    {
+        player = GameObject.Find("Player");    
+    }
+
     void LateUpdate()
     {
         transform.position = new Vector3(player.transform.position.x + offset.x, player.transform.position.y + offset.y, transform.position.z);
