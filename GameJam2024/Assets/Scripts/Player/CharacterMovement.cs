@@ -6,6 +6,7 @@ public class CharacterMovement : MonoBehaviour
 {
     [SerializeField]
     [Range(1.0f, 10.0f)] public float movementSpeed = 5.0f;
+    public volatile float horizontalInputMovement;
 
     [SerializeField]
     private SpriteRenderer _spriteRenderer;
@@ -14,14 +15,17 @@ public class CharacterMovement : MonoBehaviour
     private CharacterChecks characterChecks;
     
 
-    public delegate void OnCharacterMove();
+    public delegate void OnCharacterMove(float horizontalInputMovement);
     public static event OnCharacterMove OnCharacterMoveEvent;
 
 
+    void Awake()
+    {
+        characterChecks = CharacterChecks.Instance;
+    }
+
     void Start()
     {
-        // Obtener la instancia de CharacterChecks
-        characterChecks = CharacterChecks.Instance;
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
@@ -33,9 +37,10 @@ public class CharacterMovement : MonoBehaviour
     void MoveCharacterHorizontally()
     {
 
-        OnCharacterMoveEvent?.Invoke();
+        horizontalInputMovement = Input.GetAxis("Horizontal");  
+        OnCharacterMoveEvent?.Invoke(horizontalInputMovement);
         // Mueve al personaje horizontalmente
-        transform.position += Vector3.right * Input.GetAxis("Horizontal") *  Time.deltaTime * movementSpeed;
+        transform.position += Vector3.right * horizontalInputMovement *  Time.deltaTime * movementSpeed;
 
         
         

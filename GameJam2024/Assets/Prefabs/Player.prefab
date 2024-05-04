@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 4085701977656250033}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.229, y: -0.21, z: -0.011605832}
+  m_LocalPosition: {x: 1.33, y: -0.07, z: -0.011605832}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -252,8 +252,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ab8ebe816d2d4690bbd1662ac4bc63c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 1396975253355375529, guid: dba6ad6d1d9734c63bd5d4a08e68cf55, type: 3}
+  projectilePrefab: {fileID: 3352520811301246833, guid: e80756ffaef0647718da375c092b65d4, type: 3}
   proyectilesRemaining: 6
   rechargeTime: 0.4
   canShoot: 1
-  reactivateShootingTime: 0.2
+  reactivateShootingTime: 0.4

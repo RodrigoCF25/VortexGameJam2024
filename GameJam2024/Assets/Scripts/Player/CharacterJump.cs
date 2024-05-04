@@ -11,8 +11,9 @@ public class CharacterJump : MonoBehaviour
 
     [SerializeField]
     [Range(1.0f, 10.0f)] public float jumpForce = 5.0f;
-    [Range(1, 3)] public int maxJumpCount = 2;
+    [Range(1, 3)] public volatile int maxJumpCount = 2;
     public int jumpCount = 0;
+
 
 
     // Start is called before the first frame update
@@ -42,7 +43,6 @@ public class CharacterJump : MonoBehaviour
             {
                 jumpCount = 1;
             }
-
 
             _rigidbody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
         }
