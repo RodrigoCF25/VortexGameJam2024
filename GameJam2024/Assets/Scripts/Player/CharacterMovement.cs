@@ -9,24 +9,19 @@ public class CharacterMovement : MonoBehaviour
     public volatile float horizontalInputMovement;
 
     [SerializeField]
-    private SpriteRenderer _spriteRenderer;
+    public SpriteRenderer _spriteRenderer;
 
     // Referencia al objeto que maneja la dirección de mirada del personaje
-    private CharacterChecks characterChecks;
+    public CharacterChecks _characterChecks;
     
 
     public delegate void OnCharacterMove(float horizontalInputMovement);
     public static event OnCharacterMove OnCharacterMoveEvent;
 
 
-    void Awake()
-    {
-        characterChecks = CharacterChecks.Instance;
-    }
 
     void Start()
     {
-        _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void Update()
@@ -36,13 +31,16 @@ public class CharacterMovement : MonoBehaviour
 
     void MoveCharacterHorizontally()
     {
-
-        horizontalInputMovement = Input.GetAxis("Horizontal");  
-        OnCharacterMoveEvent?.Invoke(horizontalInputMovement);
-        // Mueve al personaje horizontalmente
-        transform.position += Vector3.right * horizontalInputMovement *  Time.deltaTime * movementSpeed;
+        if(_characterChecks.IsKeyBoardInputAllowded())
+        {
+            horizontalInputMovement = Input.GetAxis("Horizontal");  
+            OnCharacterMoveEvent?.Invoke(horizontalInputMovement);
+            // Mueve al personaje horizontalmente
+            transform.position += Vector3.right * horizontalInputMovement *  Time.deltaTime * movementSpeed;
+        }
 
         
         
     }
+    
 }

@@ -15,7 +15,7 @@ public class Projectile : MonoBehaviour
 
     void Awake()
     {
-        _characterChecks = CharacterChecks.Instance;
+        _characterChecks = GameObject.Find("Player").GetComponent<CharacterChecks>();
     }
 
     // Start is called before the first frame update

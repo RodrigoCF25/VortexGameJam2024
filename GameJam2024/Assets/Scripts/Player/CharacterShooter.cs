@@ -13,20 +13,17 @@ public class CharacterShooter : MonoBehaviour
 
     private GameObject shootingSpawn;
 
-
+    public CharacterChecks _characterChecks;
 
     void Start()
     {
         shootingSpawn = GameObject.Find("ShootingSpawn");
+        _characterChecks = GetComponent<CharacterChecks>();
     }
 
     void Update() 
     {
-        if (Input.GetKey(KeyCode.F))
-        {
-            Shoot();
-        }
-        
+        Shoot();
     }
 
     IEnumerator ReactivateShooting()
@@ -43,7 +40,7 @@ public class CharacterShooter : MonoBehaviour
 
     public void Shoot()
     {
-        if (canShoot && proyectilesRemaining > 0)
+        if (_characterChecks.IsKeyBoardInputAllowded() && Input.GetKey(KeyCode.F) && canShoot && proyectilesRemaining > 0)
         {
             GameObject projectile = ObjectPooler.Instance.SpawnFromPool("Fish", shootingSpawn.transform.position , projectilePrefab.transform.rotation);
 

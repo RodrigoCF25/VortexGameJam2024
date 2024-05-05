@@ -5,22 +5,19 @@ using UnityEngine;
 public class CharacterAnimationsController : MonoBehaviour
 {
 
-    private Animator _animator;
+    public Animator _animator;
     
-    private CharacterChecks _characterChecks;
+    public CharacterChecks _characterChecks;
 
-
-    void Awake()
-    {
-        _characterChecks = CharacterChecks.Instance;
-    }
 
     // Start is called before the first frame update
     void Start()
     {
-        _animator = GetComponent<Animator>();
+        _animator.SetBool("isAlive", true);
+        _characterChecks = GetComponent<CharacterChecks>();
         CharacterMovement.OnCharacterMoveEvent += SetSpeedCondition;
         CharacterChecks.OnGroundEvent += SetIsOnGroundCondition;
+        CharacterHealth.OnDie += ActivateDieAnimation;
     }
 
     // Update is called once per frame
@@ -32,13 +29,32 @@ public class CharacterAnimationsController : MonoBehaviour
 
     public void SetSpeedCondition(float horizontalInputMovement)
     {
+ 
         _animator.SetFloat("speed", Mathf.Abs(horizontalInputMovement));
+        
     }
 
     public void SetIsOnGroundCondition(bool isOnGround)
     {
+
         _animator.SetBool("isOnGround", isOnGround);
+        
     }
 
+
+    public void ActivateDieAnimation()
+    {
+
+        _animator.SetBool("isAlive", false);
+        
+    }
+
+
+    void OnDestroy()
+    {
+        CharacterMovement.OnCharacterMoveEvent -= SetSpeedCondition;
+        CharacterChecks.OnGroundEvent -= SetIsOnGroundCondition;
+        CharacterHealth.OnDie -= ActivateDieAnimation;
+    }
 
 }

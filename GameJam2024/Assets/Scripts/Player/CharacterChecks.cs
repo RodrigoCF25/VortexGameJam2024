@@ -12,26 +12,23 @@ public class CharacterChecks : MonoBehaviour
     public volatile bool characterWatchingRight = true;
     private SpriteRenderer _spriteRenderer;
 
+    public bool allowKeyBoardInput = true;
+
+
     //For the animator script
     public delegate void OnGround(bool isOnGround);
     public static event OnGround OnGroundEvent;
 
-    #region Singleton
-    public static  CharacterChecks Instance;
-
-    private void Awake()
-    {
-        Instance = this;
-    }
-
-    #endregion
 
     // Start is called before the first frame update
     void Start()
     {
+
         _rigidbody = GetComponent<Rigidbody2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         CharacterMovement.OnCharacterMoveEvent += SetCharacterWatchingDirection;
+        groundMask = LayerMask.GetMask("Ground");
+        allowKeyBoardInput = true;
     }
 
     // Update is called once per frame
@@ -63,18 +60,41 @@ public class CharacterChecks : MonoBehaviour
         if (horizontalInputMovement > 0 && !characterWatchingRight)
         {
             characterWatchingRight = true;
-            transform.Rotate(0f, 180f, 0f);
+            if(this)
+            {
+                this.transform.Rotate(0f, 180f, 0f);
+            }
         }
         else if (horizontalInputMovement < 0 && characterWatchingRight)
         {
             characterWatchingRight = false;
-            transform.Rotate(0f, 180f, 0f);
+            if(this)
+            {
+            this.transform.Rotate(0f, 180f, 0f);
+            }
         }
     }
 
+    public void SetKeyBoardInput(bool allowKeyBoardInput)
+    {
+        this.allowKeyBoardInput = allowKeyBoardInput;
+    }
     
+    public bool IsKeyBoardInputAllowded()
+    {
+        return allowKeyBoardInput;
+    }
+
+    public void StopTime(bool stopTime)
+    {
+        Time.timeScale = stopTime ? 0 : 1;
+    }
 
 
+    void OnDestroy()
+    {
+        CharacterMovement.OnCharacterMoveEvent -= SetCharacterWatchingDirection;
+    }
 
 
 }

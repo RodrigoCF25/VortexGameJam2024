@@ -11,7 +11,7 @@ public class CharacterJump : MonoBehaviour
 
     [SerializeField]
     [Range(1.0f, 10.0f)] public float jumpForce = 5.0f;
-    [Range(1, 3)] public volatile int maxJumpCount = 2;
+    [Range(1, 3)] public volatile byte maxJumpCount = 2;
     public int jumpCount = 0;
 
 
@@ -32,7 +32,7 @@ public class CharacterJump : MonoBehaviour
 
     void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && (CharacterChecks.Instance.IsOnGround() || (jumpCount < maxJumpCount)))
+        if (_characterChecks.IsKeyBoardInputAllowded() &&  Input.GetKeyDown(KeyCode.Space) && (_characterChecks.IsOnGround() || (jumpCount < maxJumpCount)))
         {
             // Incrementar el contador de saltos si no está en el suelo
             if (!_characterChecks.IsOnGround())
@@ -48,6 +48,7 @@ public class CharacterJump : MonoBehaviour
         }
 
     }
+    
 
 
 }
