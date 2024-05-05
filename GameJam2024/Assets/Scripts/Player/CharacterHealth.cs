@@ -11,14 +11,19 @@ public class CharacterHealth : MonoBehaviour, IDamageable
     public delegate void OnHealthChangedDelegate(byte currentHealth);
     public static event OnHealthChangedDelegate OnHealthChangedEvent;
 
-    public delegate void OnTakeDamageDelegate();
-    public static event OnTakeDamageDelegate OnTakinDamage;
+    public delegate void OnTakeDamageDelegate(bool hasReceivedDamage);
+    public static event OnTakeDamageDelegate OnTakingDamage;
 
 
     public delegate void OnDieDelegate();
     public static event OnDieDelegate OnDie;
 
     public bool invulnerable = false;
+    public float invulnerableTime = 1.0f;
+
+    public bool hasReceivedDamage = false;
+    public float receiveDamageTime = 0.5f;
+    public float dyingTime = 3.0f;
 
     private CharacterChecks _characterChecks;
 
@@ -26,11 +31,13 @@ public class CharacterHealth : MonoBehaviour, IDamageable
     {
         _characterChecks = GameObject.Find("Player").GetComponent<CharacterChecks>();
         playerCurrentHealth = playerMaxHealth;
+        hasReceivedDamage = false;
+        invulnerable = false;
     }
 
     void Update()
     {
-        if (_characterChecks.IsKeyBoardInputAllowded() && Input.GetKeyDown(KeyCode.K))
+        if (_characterChecks.IsKeyBoardInputAllowded() && Input.GetKeyDown(KeyCode.O))
         {
             TakeDamage(1);
         }
@@ -45,19 +52,23 @@ public class CharacterHealth : MonoBehaviour, IDamageable
 
         playerCurrentHealth -= damage;
         OnHealthChangedEvent?.Invoke(playerCurrentHealth);
+        OnTakeDamage();
         if (playerCurrentHealth == 0)
         {
+
             Die();
         }
         else
         {
-            OnTakeDamage();
+            StartCoroutine(Invulnerable());
         }
     }
 
     public void OnTakeDamage()
     {
-        // Implementa acciones adicionales cuando el personaje recibe daño
+        hasReceivedDamage = true;
+        OnTakingDamage?.Invoke(hasReceivedDamage);
+        StartCoroutine(ReceiveDamage());
     }
 
     public void Die()
@@ -68,7 +79,7 @@ public class CharacterHealth : MonoBehaviour, IDamageable
     IEnumerator Invulnerable()
     {
         invulnerable = true;
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(invulnerableTime);
         invulnerable = false;
     }
 
@@ -76,16 +87,23 @@ public class CharacterHealth : MonoBehaviour, IDamageable
     {
         //el usuario ya no tiene input
         _characterChecks.SetKeyBoardInput(false);
+        yield return new WaitForSeconds(receiveDamageTime);
         OnDie?.Invoke();
-        yield return new WaitForSeconds(3.0f);
+        yield return new WaitForSeconds(dyingTime);
         
     }
 
+    IEnumerator ReceiveDamage()
+    {
+        yield return new WaitForSeconds(0.5f);
+        hasReceivedDamage = false;
+        OnTakingDamage?.Invoke(hasReceivedDamage);
+    }
 
     void OnDestroy()
     {
         OnHealthChangedEvent = null;
-        OnTakinDamage = null;
+        OnTakingDamage = null;
         OnDie = null;
     }
 

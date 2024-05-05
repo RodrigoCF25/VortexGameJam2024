@@ -40,7 +40,7 @@ public class CharacterShooter : MonoBehaviour
 
     public void Shoot()
     {
-        if (_characterChecks.IsKeyBoardInputAllowded() && Input.GetKey(KeyCode.F) && canShoot && proyectilesRemaining > 0)
+        if (_characterChecks.IsKeyBoardInputAllowded() && Input.GetKey(KeyCode.K) && canShoot && proyectilesRemaining > 0)
         {
             GameObject projectile = ObjectPooler.Instance.SpawnFromPool("Fish", shootingSpawn.transform.position , projectilePrefab.transform.rotation);
 

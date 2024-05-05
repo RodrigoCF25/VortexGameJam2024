@@ -18,6 +18,8 @@ public class CharacterAnimationsController : MonoBehaviour
         CharacterMovement.OnCharacterMoveEvent += SetSpeedCondition;
         CharacterChecks.OnGroundEvent += SetIsOnGroundCondition;
         CharacterHealth.OnDie += ActivateDieAnimation;
+        CharacterHealth.OnTakingDamage += HasReceivedDamageAnimation;
+        CharacterAttack.OnAttackEvent += SetAttackAnimationStatus;
     }
 
     // Update is called once per frame
@@ -41,6 +43,10 @@ public class CharacterAnimationsController : MonoBehaviour
         
     }
 
+    public void HasReceivedDamageAnimation(bool hasReceivedDamage)
+    {
+        _animator.SetBool("hasReceivedDamage",hasReceivedDamage);
+    }
 
     public void ActivateDieAnimation()
     {
@@ -50,11 +56,20 @@ public class CharacterAnimationsController : MonoBehaviour
     }
 
 
+    public void SetAttackAnimationStatus(bool isAttacking)
+    {
+        _animator.SetBool("isAttacking", isAttacking);
+    }
+
+
+
+
     void OnDestroy()
     {
         CharacterMovement.OnCharacterMoveEvent -= SetSpeedCondition;
         CharacterChecks.OnGroundEvent -= SetIsOnGroundCondition;
         CharacterHealth.OnDie -= ActivateDieAnimation;
+        CharacterAttack.OnAttackEvent -= SetAttackAnimationStatus;
     }
 
 }
